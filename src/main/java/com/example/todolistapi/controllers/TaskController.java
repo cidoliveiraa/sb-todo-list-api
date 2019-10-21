@@ -1,22 +1,28 @@
 package com.example.todolistapi.controllers;
 
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
+import com.example.todolistapi.models.Task;
+import com.example.todolistapi.repository.TaskRepository;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.todolistapi.controllers.dto.TaskDto;
-import com.example.todolistapi.models.*;
-
 @RestController
-public class TaskController{
+public class TaskController {
 
-  @RequestMapping("/tasks")
-  public List<TaskDto> List(){
-    Task task = new Task("11111", "testzito papai", LocalDateTime.now(), StatusTask.PENDING);
-    return TaskDto.convert(Arrays.asList(task, task, task));
-    
+  @Autowired
+  TaskRepository taskRepository;
+
+  @RequestMapping(method = RequestMethod.POST, value = "/tasks")
+  public String create(@RequestBody Task task) {
+    taskRepository.save(task);
+    return task.getId();
+  }
+
+  @RequestMapping(method = RequestMethod.GET, value = "/tasks")
+  public Iterable<Task> list() {
+    return taskRepository.findAll();
   }
 }
