@@ -4,15 +4,19 @@ import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(collection = "NewTasks")
 public class Task {
 
 	@Id
 	private String id;
+	@Field
 	private String name;
-	private LocalDateTime date = LocalDateTime.now();
-	private StatusTask status = StatusTask.PENDING;
+	@Field
+	private LocalDateTime date;
+	@Field
+	private StatusTask status;
 
 	public Task(String id, String name, LocalDateTime date, StatusTask status) {
 		this.setId(id);
